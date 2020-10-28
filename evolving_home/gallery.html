@@ -3,38 +3,46 @@
     <head>
         <meta charset="UTF-8">
         <title>Sam's Gallery</title>
+
+        <script src="gallery.js" defer></script>
     </head>
 
     <body>
         <header>
-            <h1>Sam's Art Page</h1>
-            <h4>Some of my drawings, don't judge</h4>
+            <h1>Sam's Drawing Page</h1>
         </header>
         <hr>
         <h2>Navigation</h2>
         <ul>
             <li><a href="#some_drawings">Miscellaneous Drawings</a></li>
             <li><a href="#bluecoats">Bluecoats Illustrations</a></li>
+            <li><a href="#your_turn">Your Turn!</a></li>
         </ul>
         <hr>
+
         <main>
+            <h2>Featured Image</h2>
+            <span>Click for a random image, or select one from below.</span><br>
+            <img src="images/drawings/drawing2.jpeg" id="photo_frame" onclick="changePhoto()" width="600">
+            <br><span id="photo_caption"></span><br>
+            
             <h2 id="some_drawings">Miscellaneous Drawings</h2>
             <table>
                 <tbody>
                     <tr>
-                        <td><img src="images/drawings/drawing2.jpeg" alt="Sam's hair goals" width="500px"></td>
+                        <td><img src="images/drawings/drawing2.jpeg" alt="Sam's hair goals" width="200"></td>
                         <td>
-                            <img src="images/drawings/drawing1.png" alt="Sam's garbage children" width="500px">
+                            <img src="images/drawings/drawing1.png" alt="Sam's garbage children" width="200">
                             <br>
                             <figurecaption>Purdy does not love me :(</figurecaption>
                         </td>
-                        <td><img src="images/drawings/drawing3.jpg" alt="Sparkly picture" width="500px"></td>
+                        <td><img src="images/drawings/drawing3.jpg" alt="Sparkly picture" width="200"></td>
                     </tr>
 
                     <tr>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing4.jpeg" alt="Sam looking cool" width="500px"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing6.JPG" alt="Portrait of Kevin" width="500px"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing5.jpeg" alt="Church lady" width="500px"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing4.jpeg" alt="Sam looking cool" width="200"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing6.JPG" alt="Portrait of Kevin" width="200"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing5.jpeg" alt="Church lady" width="200"></td>
                     </tr>
                 </tbody>
             </table>
@@ -43,20 +51,26 @@
             <table>
                 <tbody>
                     <tr>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats1.PNG" alt="An illustration of a Bluecoats performer" width="500px"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats2.PNG" alt="An illustration of a Bluecoats performer" width="500px"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats3.PNG" alt="An illustration of a Bluecoats performer" width="500px"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats1.PNG" alt="An illustration of a Bluecoats performer, Blackbird" width="200"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats2.PNG" alt="An illustration of a Bluecoats performer, Within You Without You" width="200"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats3.PNG" alt="An illustration of a Bluecoats performer, Sgt. Pepper" width="200"></td>
                     </tr>
 
                     <tr>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats4.PNG" alt="An illustration of a Bluecoats performer" width="500px"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats5.PNG" alt="An illustration of a Bluecoats performer" width="500px"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats6.PNG" alt="An illustration of a Bluecoats performer" width="500px"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats4.PNG" alt="An illustration of a Bluecoats performer, I Want to Hold Your Hand" width="200"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats5.PNG" alt="An illustration of a Bluecoats performer, Eleanore Rigby" width="200"></td>
+                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats6.PNG" alt="An illustration of a Bluecoats performer, Come Together" width="200"></td>
                     </tr>
                 </tbody>
             </table>
+            <hr>
+            <h2 id="your_turn">Your Turn!</h2>
+            <input type="button" onclick="clearCanvas()" value="Clear Canvas">
+            <input type="button" onclick="newCanvas()" value="Save Canvas">
+            <br>
+            <div id="drawing_area"><canvas></canvas></div>
+            <br>
+            <div id="past_drawings"></div>
         </main>
-
     </body>
-
 </html>
