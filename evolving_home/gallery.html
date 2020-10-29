@@ -14,7 +14,7 @@
         <hr>
         <h2>Navigation</h2>
         <ul>
-            <li><a href="#some_drawings">Miscellaneous Drawings</a></li>
+            <li><a href="#some_drawings">Recent Drawings</a></li>
             <li><a href="#bluecoats">Bluecoats Illustrations</a></li>
             <li><a href="#your_turn">Your Turn!</a></li>
         </ul>
@@ -26,7 +26,7 @@
             <img src="images/drawings/drawing2.jpeg" id="photo_frame" onclick="changePhoto()" width="600">
             <br><span id="photo_caption"></span><br>
             
-            <h2 id="some_drawings">Miscellaneous Drawings</h2>
+            <h2 id="some_drawings">Recent Drawings</h2>
             <table>
                 <tbody>
                     <tr>
@@ -40,9 +40,15 @@
                     </tr>
 
                     <tr>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing4.jpeg" alt="Sam looking cool" width="200"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing6.JPG" alt="Portrait of Kevin" width="200"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/drawings/drawing5.jpeg" alt="Church lady" width="200"></td>
+                        <td><img src="images/drawings/drawing4.jpeg" alt="Sam looking cool" width="200"></td>
+                        <td><img src="images/drawings/drawing6.JPG" alt="Portrait of Kevin" width="200"></td>
+                        <td><img src="images/drawings/drawing5.jpeg" alt="Church lady" width="200"></td>
+                    </tr>
+
+                    <tr>
+                        <td><img src="images/drawings/drawing7.jpeg" alt="Trouble sleeping" width="200"></td>
+                        <td><img src="images/drawings/drawing9.jpeg" alt="&lt;3 &lt;3 &lt;3 Michael & Lara &lt;3 &lt;3 &lt;3" width="200"></td>
+                        <td><img src="images/drawings/drawing8.jpg" alt="Waiting during the pandemic" width="200"></td>
                     </tr>
                 </tbody>
             </table>
@@ -51,15 +57,15 @@
             <table>
                 <tbody>
                     <tr>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats1.PNG" alt="An illustration of a Bluecoats performer, Blackbird" width="200"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats2.PNG" alt="An illustration of a Bluecoats performer, Within You Without You" width="200"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats3.PNG" alt="An illustration of a Bluecoats performer, Sgt. Pepper" width="200"></td>
+                        <td><img src="images/bluecoats/bluecoats1.PNG" alt="An illustration of a Bluecoats performer, Blackbird" width="200"></td>
+                        <td><img src="images/bluecoats/bluecoats2.PNG" alt="An illustration of a Bluecoats performer, Within You Without You" width="200"></td>
+                        <td><img src="images/bluecoats/bluecoats3.PNG" alt="An illustration of a Bluecoats performer, Sgt. Pepper" width="200"></td>
                     </tr>
 
                     <tr>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats4.PNG" alt="An illustration of a Bluecoats performer, I Want to Hold Your Hand" width="200"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats5.PNG" alt="An illustration of a Bluecoats performer, Eleanore Rigby" width="200"></td>
-                        <td><img src="https://www.pic.ucla.edu/~samamin/images/bluecoats/bluecoats6.PNG" alt="An illustration of a Bluecoats performer, Come Together" width="200"></td>
+                        <td><img src="images/bluecoats/bluecoats4.PNG" alt="An illustration of a Bluecoats performer, I Want to Hold Your Hand" width="200"></td>
+                        <td><img src="images/bluecoats/bluecoats5.PNG" alt="An illustration of a Bluecoats performer, Eleanore Rigby" width="200"></td>
+                        <td><img src="images/bluecoats/bluecoats6.PNG" alt="An illustration of a Bluecoats performer, Come Together" width="200"></td>
                     </tr>
                 </tbody>
             </table>
@@ -67,6 +73,14 @@
             <h2 id="your_turn">Your Turn!</h2>
             <input type="button" onclick="clearCanvas()" value="Clear Canvas">
             <input type="button" onclick="newCanvas()" value="Save Canvas">
+            <input type="button" onclick="loadImage()" value="Restore Canvas">
+            <br>
+            <label for="red">Red</label>
+            <input type="range" id="red" min="0" max="255" value="0" step="1" oninput="updateColors()">
+            <label for="green">Green</label>
+            <input type="range" id="green" min="0" max="255" value="0" step="1" oninput="updateColors()">
+            <label for="blue">Blue</label>
+            <input type="range" id="blue" min="0" max="255" value="0" step="1" oninput="updateColors()">
             <br>
             <div id="drawing_area"><canvas></canvas></div>
             <br>
