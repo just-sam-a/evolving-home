@@ -42,6 +42,63 @@ function clearCanvas() {
     drawing.context.clearRect(0, 0, drawing.canvas.width, drawing.canvas.height);
 }
 
+function sparsify(imgdata) {
+    // mild compression of our image by removing zero pixels
+    // compression would be even better stored as a flat array instead of object
+    let local = {}
+
+    let imgarr = imgdata.data;
+    for(let i = 0; i < imgarr.length; i+=4) {
+        // the data array is a flat array of RGBA values
+        // so if any of the current four we're examining aren't 0, that means there's data there
+        if(imgarr[i] != 0 || imgarr[i+1] != 0 || imgarr[i+2] != 0 || imgarr[i+3] != 0) {
+            local[i] = [imgarr[i], imgarr[i+1], imgarr[i+2], imgarr[i+3]];
+        }
+    }
+    local.len = imgarr.length;
+    return local;
+}
+
+function desparsify(imgobj) {
+    let local = [];
+    let zeros = [0, 0, 0, 0];
+
+    let len = imgobj.len;
+    delete imgobj.len;
+
+    // If we've got an element in our image object at this point,
+    //    we'll push that element in, otherwise we'll push the zeros.
+    for(let i = 0; i < len; i+=4) {
+        if(i.toString() in imgobj) {
+            local.push(...imgobj[i]);
+        } else {
+            local.push(...zeros);
+        }
+    }
+
+    return local;
+}
+
+function saveCanvas() {
+    // We're saving, to a global variable, our most recent image's data
+    let imgData=drawing.context.getImageData(0, 0, drawing.canvas.width, drawing.canvas.height);
+    globalImgData = imgData.data;
+
+    // Compress the image, and convert to a string
+    let compressed = sparsify(imgData);
+    compressed = JSON.stringify(compressed);
+
+    // If the compression is actually smaller, we'll use it, otherwise we'll use the original
+    if(compressed.length < imgData.data.toString().length) {
+        document.getElementById('toPHP_text').value = compressed;
+    } else {
+        document.getElementById('toPHP_text').value = imgData.data.toString();
+    }
+    
+    // Finally, submit the form so that PHP can save the image.
+    document.getElementById('toPHP_submit').click();
+}
+
 function newCanvas() {
     // remove event listeners from drawing.canvas
     // remember that we bound "this" to be the drawing object for our canvas actions
@@ -51,25 +108,9 @@ function newCanvas() {
     drawing.canvas.removeEventListener("mouseup", drawing.canvas_mouseup);
     drawing.canvas.removeEventListener("mousemove", drawing.canvas_mousemove);
 
-    // We're saving, to a global variable, our most recent image's data
-    let imgData=drawing.context.getImageData(0, 0, drawing.canvas.width, drawing.canvas.height);
-    console.log(imgData.data);
-    globalImgData = JSON.stringify(imgData.data);
-    document.getElementById('toPHP_text').value = imgData.data.toString();
-    document.getElementById('toPHP_submit').click();
-
-    /*
-    // This was a both noble and silly idea for saving and loading images inside of cookies
-    // I'm leaving the code here in case it's relevant, later
+    saveCanvas();
     
-    let loopCount = toJSON.length / 1000;
-    for(let i = 0; i < loopCount; ++i) {
-        document.cookie = "image" + i + "=" + toJSON.slice(0, 1000);
-        toJSON = toJSON.slice(1000)
-    } 
-    */
-    
-    // append the canvas we're saving to the appropriate object in document
+    // append the canvas we've saved to the appropriate object in document
     document.getElementById("past_drawings").append(document.getElementsByTagName('canvas')[0]);
 
     // now create a new canvas element
@@ -89,25 +130,8 @@ function newCanvas() {
 }
 
 function loadImage() {
-    /*
-    // This was a both noble and silly idea for saving and loading images inside of cookies
-    // I'm leaving the code here in case it's relevant, later
-
-    let cookieValues = document.cookie.split('; ');
-    cookieValues.sort();
-    let imageCookie = "";
-    for(let i = 0; i < cookieValues.length; i++) {
-        let localCookie = cookieValues[i].split("=");
-        console.log(localCookie[0]);
-        if (localCookie[0].startsWith("image")) {
-            console.log(localCookie[1]);
-            imageCookie += localCookie[1];
-        }
-    } 
-    */
-
     // Let's load our most recent image from the global variable we created
-    let savedData = JSON.parse(globalImgData);
+    let savedData = globalImgData;
     let imgData = drawing.context.getImageData(0, 0, drawing.canvas.width, drawing.canvas.height);
 
     let data = imgData.data;
@@ -120,6 +144,32 @@ function loadImage() {
     drawing.context.putImageData(imgData, 0, 0);  
     let canvases = document.getElementById("past_drawings");
     canvases.removeChild(canvases.lastChild);
+}
+
+function loadFrom(img) {
+    // Let's update our global which stores the most recent image
+    globalImgData = img;
+    let savedData = globalImgData;
+
+    // Then create a new canvas element and associated variables
+    let newCanvas = document.createElement('canvas');
+    newCanvas.height = 450;
+    newCanvas.width = 600;
+
+    let context = newCanvas.getContext('2d');
+    newCanvas.style.border = "thin solid black";
+    
+    let imgData = context.getImageData(0, 0, newCanvas.width, newCanvas.height);
+
+    // and overwrite its data with the most recent image
+    let data = imgData.data;
+    for(let i = 0; i < data.length; i++){
+        data[i] = savedData[i];
+    }
+
+    // Finally, let's append that canvas we created to our document.
+    context.putImageData(imgData, 0, 0);
+    document.getElementById("past_drawings").append(newCanvas);
 }
 
 // oninput will be called continuously as the slider is being updated
@@ -245,6 +295,31 @@ window.onload = function() {
         document.getElementById('green').value = Number(g);
     }
 
+    /*
+    // Old code for loading a single image directly into the active canvas
     let element = document.getElementById('communication');
-    let data = element.textContent;
+    let savedData = desparsify(JSON.parse(element.textContent));
+
+    let imgData = drawing.context.getImageData(0, 0, drawing.canvas.width, drawing.canvas.height);
+
+    let data = imgData.data;
+    for(let i = 0; i < data.length; i++){
+        data[i] = savedData[i];
+    }
+
+    drawing.context.putImageData(imgData, 0, 0);  
+    */
+
+    // We're going to split the text containing potentially multiple images by }
+    let communication = document.getElementById('communication');
+    let elements = communication.textContent.split('}');
+
+    // Then loop through the result of the split 
+    for(let i = 0; i < elements.length; ++i) {
+        try {
+            loadFrom(desparsify(JSON.parse(elements[i] + '}')));
+        } catch(error) {
+            console.log(error);
+        }
+    }
 };

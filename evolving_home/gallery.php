@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <title>Sam's Gallery</title>
 
-        <script src="gallery.js" defer></script>
+        <script src="gallery.js?v=7" defer></script>
     </head>
 
     <body>
@@ -102,7 +102,7 @@
 
             <?php
                 if(isset($_POST['canvas'])) {
-                    $file = fopen('saved_canvases.txt', 'w');
+                    $file = fopen('saved_canvases.txt', 'a');
                     $local = $_POST['canvas'];
                     fwrite($file, $local);
                     fclose($file);
