@@ -53,7 +53,11 @@ function newCanvas() {
 
     // We're saving, to a global variable, our most recent image's data
     let imgData=drawing.context.getImageData(0, 0, drawing.canvas.width, drawing.canvas.height);
+    console.log(imgData.data);
     globalImgData = JSON.stringify(imgData.data);
+    document.getElementById('toPHP_text').value = imgData.data.toString();
+    document.getElementById('toPHP_submit').click();
+
     /*
     // This was a both noble and silly idea for saving and loading images inside of cookies
     // I'm leaving the code here in case it's relevant, later
@@ -121,12 +125,16 @@ function loadImage() {
 // oninput will be called continuously as the slider is being updated
 // onchange will be called once the user releases the slider
 function updateColors() {
-    drawing.set_color(document.getElementById('red').value, document.getElementById('green').value, document.getElementById('blue').value);
+    let r = document.getElementById('red').value;
+    let g = document.getElementById('green').value;
+    let b = document.getElementById('blue').value;
+
+    drawing.set_color(r, g, b);
 
     // every time our colors are updated, let's update (or create) cookies to store the colors
-    document.cookie = "red=" + document.getElementById('red').value;
-    document.cookie = "green=" + document.getElementById('green').value;
-    document.cookie = "blue=" + document.getElementById('blue').value;
+    document.cookie = "red=" + r;
+    document.cookie = "green=" + g;
+    document.cookie = "blue=" + b;
 }
 
 //---------------------------------------------------------
@@ -236,4 +244,7 @@ window.onload = function() {
         document.getElementById('blue').value = Number(b);
         document.getElementById('green').value = Number(g);
     }
+
+    let element = document.getElementById('communication');
+    let data = element.textContent;
 };
