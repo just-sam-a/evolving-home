@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+    height: 400px;
+}
+
+body {
+    font: 71%/1.5 Verdana, Sans-Serif;
+    background: #eee;
+}
+
+#write {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+
+    padding: 5px;
+    width: 250px;
+    height: 150px;
+    font: 1em/1.5 Verdana, Sans-Serif;
+    background: #fff;
+    border: 1px solid #f9f9f9;
+    
+    overflow-wrap: break-word;
+    margin-left: -125px;
+}
+
+#keyboard {
+    touch-action: manipulation;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+
+    width: 120px;
+    height: 120px;
+    background: rgb(186, 186, 186);
+    margin-left: -60px;
+}
+
+#one {
+    background-image: url(one/one_alpha.jpg);
+    background-size: cover;
+
+    -webkit-clip-path: polygon(0 0, 0% 100%, 19% 100%, 98% 0);
+    clip-path: polygon(0 0, 0% 100%, 19% 100%, 98% 0);
+
+    margin: 1px 1px 0px 1px;
+    float: left;
+    width: 47%;
+    height: 37.5%;
+    line-height: 10px;
+    text-align: left;
+    
+    background-color: #fff;
+    border: 1px solid #f9f9f9;
+}
+
+#two {
+    background-image: url(two/two_alpha.jpg);
+    background-size: cover;
+
+    -webkit-clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+    clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+
+    position: absolute;
+    left: 11%;
+
+    margin: 1px 1px 0px 1px;
+    width: 75%;
+    height: 37.5%;
+    line-height: 60px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #f9f9f9;
+}
+
+#three {
+    background-image: url(three/three_alpha.jpg);
+    background-size: cover;
+    -webkit-clip-path: polygon(100% 0, 1% 0, 81% 100%, 100% 100%);
+    clip-path: polygon(100% 0, 1% 0, 81% 100%, 100% 100%);
+
+    margin: 1px 1px 0px 1px;
+    float: left;
+    width: 46.3%;
+    height: 37.5%;
+    line-height: 10px;
+    text-align: right;
+    background-color: #fff;
+    border: 1px solid #f9f9f9;
+}
+
+#four {
+    background-image: url(four/four_alpha.jpg);
+    background-size: cover;
+    -webkit-clip-path: polygon(0 0, 19% 0, 98% 100%, 0 100%);
+    clip-path: polygon(0 0, 19% 0, 98% 100%, 0 100%);
+
+    margin: 1px 1px 0px 1px;
+    float: left;
+    width: 47%;
+    height: 37.5%;
+    line-height: 60px;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #f9f9f9;
+}
+
+#five {
+    background-image: url(five/five_alpha.jpg);
+    background-size: cover;
+    -webkit-clip-path: polygon(100% 0, 0 0, 50% 100%);
+    clip-path: polygon(100% 0, 0 0, 50% 100%);
+
+    position: absolute;
+    left: 11%;
+    top: 40%;
+
+    margin: 1px 1px 0px 1px;
+    width: 75%;
+    height: 37.5%;
+    line-height: 10px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #f9f9f9;
+}
+
+#six {
+    background-image: url(six/six_alpha.jpg);
+    background-size: cover;
+    -webkit-clip-path: polygon(81% 0, 100% 0, 100% 100%, 1% 100%);
+    clip-path: polygon(81% 0, 100% 0, 100% 100%, 1% 100%);
+
+    margin: 1px 1px 0px 1px;
+    float: left;
+    width: 46.3%;
+    height: 37.5%;
+    line-height: 10px;
+    text-align: right;
+    background-color: #fff;
+    border: 1px solid #f9f9f9;
+}
+
+#seven {
+    margin: 1px 1px 1px 1px;
+    float: left;
+    width: 96.5%;
+    height: 16.5%;
+    line-height: 40px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #f9f9f9;
+}
