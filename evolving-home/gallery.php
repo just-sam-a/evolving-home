@@ -73,7 +73,7 @@
             <hr>
             <h2 id="your_turn">Your Turn!</h2>
             <input type="button" onclick="clearCanvas()" value="Clear Canvas">
-            <input type="button" onclick="newCanvas()" value="Save Canvas">
+            <input type="button" onclick="newCanvas()" value="Submit Canvas">
             <input type="button" onclick="loadImage()" value="Restore Canvas">
             <br>
             <label for="red">Red</label>
@@ -102,7 +102,20 @@
 
             <?php
                 if(isset($_POST['canvas'])) {
-                    $file = fopen('saved_canvases.txt', 'a');
+                    $queue_dir = __DIR__ . "/queue";
+                    
+                    // this echos "..." -- there are two default files in every directory on a Linux
+                    //    system, . and .., pointers to the current and parent directory, respectively
+                    // echo implode(scandir($queue_dir));
+
+                    // array_diff returns the difference between supplied arrays -- the elements not common
+                    //    between them
+                    $files = array_diff(scandir($queue_dir), array('..', '.'));
+                    $currnum = count($files);
+
+                    $new_filename = $queue_dir . "/drawing" . $currnum . ".txt";
+                    
+                    $file = fopen($new_filename, 'w');
                     $local = $_POST['canvas'];
                     fwrite($file, $local);
                     fclose($file);
