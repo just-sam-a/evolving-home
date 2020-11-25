@@ -48,11 +48,9 @@ function saveCanvas() {
     lastImage = imgData.data;
 
     drawing.canvas.toBlob(function (blob) {
-        console.log(blob);
         let image = new File([blob], "tmp.png", {
             type: "image/png",
         });
-        console.log(image);
         
         const request = new XMLHttpRequest();
 
@@ -60,7 +58,6 @@ function saveCanvas() {
         formdata.append('image', image);
 
         request.open('POST', 'process_images.php');
-        //request.setRequestHeader("Content-type", "multipart/form-data");
         request.onload = function() {
             if (this.status === 200) {
                 console.log(this.responseText.trim());
@@ -69,6 +66,24 @@ function saveCanvas() {
 
         request.send(formdata);
      });
+}
+
+function downloadCanvas() {
+    let imageURL = drawing.canvas.toDataURL('image/png');
+
+    let request = new XMLHttpRequest();
+    request.responseType = 'blob';
+    request.onload = function () {
+        let a = document.createElement('a');
+        a.href = window.URL.createObjectURL(request.response);
+        a.download = 'canvas.png';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    };
+    request.open('GET', imageURL);
+    request.send();
 }
 
 function newCanvas() {
@@ -247,4 +262,22 @@ window.onload = function() {
         document.getElementById('blue').value = Number(b);
         document.getElementById('green').value = Number(g);
     }
+
+    const request = new XMLHttpRequest();
+
+    request.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let documents = this.responseText.trim();
+            documents = documents.split(',');
+            documents.forEach(name => {
+                let newImage = new Image();
+                newImage.src = "saved/" + name;
+                newImage.style.border = "thin solid black";
+                document.getElementById('past_drawings').append(newImage);
+            });
+        }
+    };
+
+    request.open('GET', 'get_images.php');
+    request.send();
 };

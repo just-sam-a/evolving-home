@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <title>Sam's Gallery</title>
 
-        <script src="gallery.js?v=22" defer></script>
+        <script src="gallery.js?v=27" defer></script>
     </head>
 
     <body>
@@ -74,6 +74,7 @@
             <h2 id="your_turn">Your Turn!</h2>
             <input type="button" onclick="clearCanvas()" value="Clear Canvas">
             <input type="button" onclick="newCanvas()" value="Submit Canvas">
+            <input type="button" onclick="downloadCanvas()" value="Download Canvas">
             <input type="button" onclick="loadRecentImage()" value="Restore Last Canvas">
             <br>
             <label for="red">Red</label>
@@ -92,20 +93,6 @@
             <br>
             <div id="past_drawings">
                 <h3>Past Drawings</h3>
-                <?php
-                    $saved_dir = __DIR__ . "/saved";
-                    $files = array_diff(scandir($saved_dir), array('..', '.'));
-                    ?> <script> let newImage; </script> <?php
-                    foreach($files as $filename) {
-                        $curr_file = 'queue/' . $filename;
-                        ?> <script>
-                            newImage = new Image();
-                            newImage.src = <?php echo '"' . "$curr_file" . '"'; ?>;
-                            newImage.style.border = "thin solid black";
-                            document.getElementById('past_drawings').append(newImage);
-                        </script> <?php
-                    }
-                ?>
             </div>
         </main>
     </body>
