@@ -43,7 +43,7 @@
         </header>
     
         <main>
-            <p>Welcome. Please enter the password to view the queue.</p>
+            <p>Welcome. Please enter a username and password to view the queue.</p>
             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <input type="text" name="username">
                 <input type="password" name="password">

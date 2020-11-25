@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <title>Sam's Gallery</title>
 
-        <script src="gallery.js?v=7" defer></script>
+        <script src="gallery.js?v=22" defer></script>
     </head>
 
     <body>
@@ -74,7 +74,7 @@
             <h2 id="your_turn">Your Turn!</h2>
             <input type="button" onclick="clearCanvas()" value="Clear Canvas">
             <input type="button" onclick="newCanvas()" value="Submit Canvas">
-            <input type="button" onclick="loadImage()" value="Restore Canvas">
+            <input type="button" onclick="loadRecentImage()" value="Restore Last Canvas">
             <br>
             <label for="red">Red</label>
             <input type="range" id="red" min="0" max="255" value="0" step="1" oninput="updateColors()">
@@ -86,41 +86,27 @@
             <br>
             <div id="drawing_area"><canvas></canvas></div>
             <br>
-            <div id="past_drawings"></div>
-
-            <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" style="display: none;">
-                <input type="text" name="canvas" id="toPHP_text">
-                <input type="submit" id="toPHP_submit">
-            </form>
-
-            <p style="display: none;" id="communication"> 
+            <div id="submitted_drawings" style="display: none;">
+                <h3>Your Submissions</h3>
+            </div>
+            <br>
+            <div id="past_drawings">
+                <h3>Past Drawings</h3>
                 <?php
-                    $canvases = file_get_contents('saved_canvases.txt');
-                    echo "$canvases";
+                    $saved_dir = __DIR__ . "/saved";
+                    $files = array_diff(scandir($saved_dir), array('..', '.'));
+                    ?> <script> let newImage; </script> <?php
+                    foreach($files as $filename) {
+                        $curr_file = 'queue/' . $filename;
+                        ?> <script>
+                            newImage = new Image();
+                            newImage.src = <?php echo '"' . "$curr_file" . '"'; ?>;
+                            newImage.style.border = "thin solid black";
+                            document.getElementById('past_drawings').append(newImage);
+                        </script> <?php
+                    }
                 ?>
-            </p>
-
-            <?php
-                if(isset($_POST['canvas'])) {
-                    $queue_dir = __DIR__ . "/queue";
-                    
-                    // this echos "..." -- there are two default files in every directory on a Linux
-                    //    system, . and .., pointers to the current and parent directory, respectively
-                    // echo implode(scandir($queue_dir));
-
-                    // array_diff returns the difference between supplied arrays -- the elements not common
-                    //    between them
-                    $files = array_diff(scandir($queue_dir), array('..', '.'));
-                    $currnum = count($files);
-
-                    $new_filename = $queue_dir . "/drawing" . $currnum . ".txt";
-                    
-                    $file = fopen($new_filename, 'w');
-                    $local = $_POST['canvas'];
-                    fwrite($file, $local);
-                    fclose($file);
-                }
-            ?>
+            </div>
         </main>
     </body>
 </html>
