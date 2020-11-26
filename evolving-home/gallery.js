@@ -96,6 +96,7 @@ function newCanvas() {
     drawing.canvas.removeEventListener("mousemove", drawing.canvas_mousemove);
 
     saveCanvas();
+    alert("Canvas successfully submitted to queue.");
     
     // append the canvas we've saved to the appropriate object in document
     if (document.getElementById("submitted_drawings").style.display === "none") {

@@ -65,17 +65,25 @@
         <main>
             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <div id="queue"></div>
-                <input type="submit" id="submit">
+                <input type="submit" name="submit" id="submit">
+                <input type="submit" name="clear" value="Clear">
             </form>
+            <input type="button" value="Go to Gallery" onclick="document.location.href='gallery.php';">
             <?php
                 $is_admin = $_SESSION['username'] === 'admin';
                 if(isset($_POST['filearr'])){
                     $file_array = $_POST['filearr'];
-
-                    foreach($file_array as $filename) {
-                        $file_directory = __DIR__ . "/queue/" . $filename;
-                        $new_file_directry = __DIR__ . "/saved/" . $filename;
-                        rename($file_directory, $new_file_directry);
+                    if(isset($_POST['submit'])) {
+                        foreach($file_array as $filename) {
+                            $file_directory = __DIR__ . "/queue/" . $filename;
+                            $new_file_directry = __DIR__ . "/saved/" . $filename;
+                            rename($file_directory, $new_file_directry);
+                        }
+                    } else if (isset($_POST['clear'])) {
+                        foreach($file_array as $filename) {
+                            $file_directory = __DIR__ . "/queue/" . $filename;
+                            unlink($file_directory);
+                        }
                     }
                 }
 

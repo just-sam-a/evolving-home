@@ -8,10 +8,10 @@
     
         $success = move_uploaded_file($_FILES['image']['tmp_name'], $new_filename);
 
-        if ($success) { ?>
-            File was uploaded sucessfully.
-        <?php } else { ?>
-            File upload failed.
-        <?php }
+        if ($success) { 
+            echo "File was uploaded sucessfully.";
+        } else {
+            echo "File upload failed.";
+        }
     }
 ?>

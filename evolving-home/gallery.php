@@ -76,6 +76,7 @@
             <input type="button" onclick="newCanvas()" value="Submit Canvas">
             <input type="button" onclick="downloadCanvas()" value="Download Canvas">
             <input type="button" onclick="loadRecentImage()" value="Restore Last Canvas">
+            <input type="button" value="Go to Queue" onclick="document.location.href='queue.php';">
             <br>
             <label for="red">Red</label>
             <input type="range" id="red" min="0" max="255" value="0" step="1" oninput="updateColors()">
