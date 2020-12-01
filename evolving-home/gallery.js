@@ -2,20 +2,21 @@ const fileNames = ['bluecoats/bluecoats1.PNG', 'bluecoats/bluecoats2.PNG', 'blue
     'drawings/drawing1.png', 'drawings/drawing2.jpeg', 'drawings/drawing3.jpg', 'drawings/drawing4.jpeg', 'drawings/drawing5.jpeg', 'drawings/drawing6.JPG', 'drawings/drawing7.jpeg', 'drawings/drawing8.jpg', 'drawings/drawing9.jpeg'];
 const colors = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 0], [255, 170, 29], [97, 0, 161]];
 let lastImage = "";
+let shown = false;
 
 function changePhoto(path) {
     let frame = document.getElementById('photo_frame');
+    let overlay = document.getElementById('photo_img');
+
     if(path) {
-        frame.src = path;
-        frame.scrollIntoView(); // use to scroll to a particular element
+        overlay.src = path;
+        document.getElementById('image_overlay').style.display = "block";
         return;
     }
 
     // get a random index value for picking an item from our fileNames array
     let randIndex = Math.floor(Math.random() * fileNames.length);
     frame.src = 'images/' + fileNames[randIndex];
-    // clear caption when we're randomly selecting an image so we don't use a mismatched one
-    document.getElementById('photo_caption').innerHTML = ""; 
 }
 
 function showCaption(caption) {
@@ -36,6 +37,24 @@ for(let i = 0; i < table.length; ++i) {
         imageElements[j].addEventListener('click', function(){changePhoto(this.src);});
         imageElements[j].addEventListener('click', function(){showCaption(this.alt);});
     }
+}
+
+function navigation() {
+    if(shown === false) {
+        shown = true;
+        document.getElementsByTagName('nav')[0].style.display = "block";
+        document.getElementById('nav_button').style.left = "238px";
+        document.getElementById('nav_button').value = "<";
+    } else {
+        shown = false;
+        document.getElementsByTagName('nav')[0].style.display = "none";
+        document.getElementById('nav_button').style.left = "10px";
+        document.getElementById('nav_button').value = ">";
+    }
+}
+
+function hide() {
+    document.getElementById('image_overlay').style.display = "none";
 }
 
 function clearCanvas() {
