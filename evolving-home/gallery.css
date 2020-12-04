@@ -11,25 +11,22 @@ body {
     z-index: -1;
 }
 
-table {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-td {
-    width: 25%;
+hr {
+    border: thin solid var(--main-text-color);
+    width: 75%;
 }
 
 canvas, img {
     background-color: white;
-    border: thin solid black;
+    border: thin solid var(--main-text-color);
     margin: 3px;
 }
 
-input[type=button], input[type=button]:focus {
+input[type=button], input[type=submit], 
+input[type=button]:focus, input[type=submit]:focus {
     color: var(--main-text-color);
     background-color: var(--main-bg-color);
-    border: thin solid black;
+    border: thin solid var(--main-text-color);
     outline: none;
 }
 
@@ -42,7 +39,7 @@ nav {
     padding-left: 20px;
     text-align: left;
 
-    border: thin solid black;    
+    border: thin solid var(--main-text-color);    
     background-color: var(--main-bg-color);
 
     display: none;
@@ -54,6 +51,7 @@ nav {
     position: fixed;
     top: 10px;
     left: 10px;
+    margin: 0px;
     float: left;
 
     z-index: 1;
@@ -76,7 +74,7 @@ nav {
 }
 
 #photo_caption {
-    border: thin solid black;   
+    border: thin solid var(--main-text-color);   
     color: var(--main-text-color); 
     background-color: var(--main-bg-color);
     padding: 3px;
@@ -98,8 +96,19 @@ nav {
     vertical-align: middle;
 
     z-index: 0;
+
+    transition: transform .2s;
 }
 
-.image_row, .image_container {
+.gallery_image:hover {
+    transform: scale(1.05);
+}
+
+.image_row, .image_container, .queue_element {
     display: block; 
+}
+
+.queue_item {
+    display: inline-block;
+    vertical-align: middle;
 }

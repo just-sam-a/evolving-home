@@ -3,6 +3,7 @@ const folderNames = ['images/0_drawings/', 'images/1_bluecoats/'];
 const colors = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 0], [255, 170, 29], [97, 0, 161]];
 let lastImage = "";
 let shown = false;
+let drawing;
 
 function changePhoto(path) {
     let frame = document.getElementById('photo_frame');
@@ -238,7 +239,7 @@ window.onload = function() {
     document.getElementById('red').value = colors[randIndex][0];
     document.getElementById('green').value = colors[randIndex][1];
     document.getElementById('blue').value = colors[randIndex][2];
-    let drawing = new Drawing(document.getElementsByTagName('canvas')[0], 600, 450, colors[randIndex]);
+    drawing = new Drawing(document.getElementsByTagName('canvas')[0], 600, 450, colors[randIndex]);
     drawing.start();
 
     // on window load, let's check to see if cookies for the image color have been set

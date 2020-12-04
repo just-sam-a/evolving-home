@@ -44,7 +44,9 @@
         </header>
     
         <main>
+            <hr>
             <p>Welcome. Please enter a username and password to view the queue.</p>
+            <p>To view submissions as a guest, please use username 'guest' and password 'guest_login'.</p>
             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <input type="text" name="username">
                 <input type="password" name="password">

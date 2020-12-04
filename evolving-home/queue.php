@@ -23,6 +23,7 @@
                 <h1>Submission Queue</h1>
             </header>
             <main>
+                <hr>
                 <p>You're not logged in. <a href="queue_login.php">Please go back and try again.</a></p>
             </main>
         </body>
@@ -40,6 +41,8 @@
 
             function loadFrom(filename, admin) {
                 let newDiv = document.createElement('div');
+                newDiv.className = "queue_element";
+                
                 let newCheckbox = document.createElement('input');
                 newCheckbox.type = "checkbox";
                 newCheckbox.name = "filearr[]"
@@ -47,7 +50,9 @@
 
                 let newImage = new Image();
                 newImage.src = "queue/" + filename;
-                newImage.style.border = "thin solid black";
+
+                newImage.className = "queue_item";
+                newCheckbox.className = "queue_item";
 
                 newDiv.append(newImage);
                 if (admin) {
@@ -65,10 +70,11 @@
         </header>
     
         <main>
+            <hr>
             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                 <div id="queue"></div>
-                <input type="submit" name="submit" id="submit">
-                <input type="submit" name="clear" value="Clear">
+                <input type="submit" name="submit" id="submit" value="Add selected to gallery">
+                <input type="submit" name="clear" id="clear" value="Clear selected from queue">
             </form>
             <input type="button" value="Go to Gallery" onclick="document.location.href='gallery.html';">
             <?php
@@ -103,7 +109,8 @@
     </body>
     <?php if($_SESSION['username'] !== 'admin') { ?>
         <script>
-            document.getElementById('submit').style = "display: none;";
+            document.getElementById('submit').style.display = "none";
+            document.getElementById('clear').style.display = "none";
         </script>
     <?php } ?>
 </html>
