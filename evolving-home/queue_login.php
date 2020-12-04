@@ -35,6 +35,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Submission Queue Login</title>
+        <link rel="stylesheet" href="gallery.css">
     </head>
 
     <body>

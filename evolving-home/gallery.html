@@ -5,14 +5,13 @@
         <title>Sam's Gallery</title>
 
         <link rel="stylesheet" href="gallery.css">
-        <script src="gallery.js?v=27" defer></script>
+        <script src="gallery.js?v=50" defer></script>
     </head>
 
     <body>
         <header>
             <h1>Sam's Drawing Page</h1>
         </header>
-
         <nav>
             <h2>Navigation</h2>
             <ul>
@@ -25,56 +24,20 @@
 
         <div id="image_overlay">
             <img id="photo_img" src="images/drawings/drawing2.jpeg" onclick="hide()" width="600">
-            <br><span id="photo_caption"></span><br>
+            <!-- <br><span id="photo_caption"></span><br> -->
         </div>
         <main>
+            <hr>
             <h2>Featured Image</h2>
             <span>Click for a random image, or select one from below.</span><br>
             <img src="images/drawings/drawing2.jpeg" id="photo_frame" onclick="changePhoto()" width="600">
             
             <h2 id="some_drawings">Recent Drawings</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td><img src="images/drawings/drawing2.jpeg" alt="Sam's hair goals" width="200"></td>
-                        <td>
-                            <img src="images/drawings/drawing1.png" alt="Sam's garbage children" width="200">
-                            <br>
-                            <figurecaption>Purdy does not love me :(</figurecaption>
-                        </td>
-                        <td><img src="images/drawings/drawing3.jpg" alt="Sparkly picture" width="200"></td>
-                    </tr>
-
-                    <tr>
-                        <td><img src="images/drawings/drawing4.jpeg" alt="Sam looking cool" width="200"></td>
-                        <td><img src="images/drawings/drawing6.JPG" alt="Portrait of Kevin" width="200"></td>
-                        <td><img src="images/drawings/drawing5.jpeg" alt="Church lady" width="200"></td>
-                    </tr>
-
-                    <tr>
-                        <td><img src="images/drawings/drawing7.jpeg" alt="Trouble sleeping" width="200"></td>
-                        <td><img src="images/drawings/drawing9.jpeg" alt="&lt;3 &lt;3 &lt;3 Michael & Lara &lt;3 &lt;3 &lt;3" width="200"></td>
-                        <td><img src="images/drawings/drawing8.jpg" alt="Waiting during the pandemic" width="200"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="image_container"></div>
 
             <h2 id="bluecoats">Bluecoats 2019 Performance</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td><img src="images/bluecoats/bluecoats1.PNG" alt="An illustration of a Bluecoats performer, Blackbird" width="200"></td>
-                        <td><img src="images/bluecoats/bluecoats2.PNG" alt="An illustration of a Bluecoats performer, Within You Without You" width="200"></td>
-                        <td><img src="images/bluecoats/bluecoats3.PNG" alt="An illustration of a Bluecoats performer, Sgt. Pepper" width="200"></td>
-                    </tr>
+            <div class="image_container"></div>
 
-                    <tr>
-                        <td><img src="images/bluecoats/bluecoats4.PNG" alt="An illustration of a Bluecoats performer, I Want to Hold Your Hand" width="200"></td>
-                        <td><img src="images/bluecoats/bluecoats5.PNG" alt="An illustration of a Bluecoats performer, Eleanore Rigby" width="200"></td>
-                        <td><img src="images/bluecoats/bluecoats6.PNG" alt="An illustration of a Bluecoats performer, Come Together" width="200"></td>
-                    </tr>
-                </tbody>
-            </table>
             <hr>
             <h2 id="your_turn">Your Turn!</h2>
             <input type="button" onclick="clearCanvas()" value="Clear Canvas">
@@ -97,9 +60,8 @@
                 <h3>Your Submissions</h3>
             </div>
             <br>
-            <div id="past_drawings">
-                <h3>Past Drawings</h3>
-            </div>
+            <h3>Past Drawings</h3>
+            <div id="past_drawings"></div>
         </main>
     </body>
 </html>

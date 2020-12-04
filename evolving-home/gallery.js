@@ -1,5 +1,5 @@
-const fileNames = ['bluecoats/bluecoats1.PNG', 'bluecoats/bluecoats2.PNG', 'bluecoats/bluecoats3.PNG', 'bluecoats/bluecoats4.PNG', 'bluecoats/bluecoats5.PNG', 'bluecoats/bluecoats6.PNG',
-    'drawings/drawing1.png', 'drawings/drawing2.jpeg', 'drawings/drawing3.jpg', 'drawings/drawing4.jpeg', 'drawings/drawing5.jpeg', 'drawings/drawing6.JPG', 'drawings/drawing7.jpeg', 'drawings/drawing8.jpg', 'drawings/drawing9.jpeg'];
+const fileNames = [];
+const folderNames = ['images/0_drawings/', 'images/1_bluecoats/'];
 const colors = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [255, 255, 0], [255, 170, 29], [97, 0, 161]];
 let lastImage = "";
 let shown = false;
@@ -16,27 +16,11 @@ function changePhoto(path) {
 
     // get a random index value for picking an item from our fileNames array
     let randIndex = Math.floor(Math.random() * fileNames.length);
-    frame.src = 'images/' + fileNames[randIndex];
+    frame.src = fileNames[randIndex];
 }
 
 function showCaption(caption) {
     document.getElementById('photo_caption').innerHTML = "Image Caption: " + caption;
-}
-
-// we have two tables, so let's access them 
-const table = document.getElementsByTagName('table');
-// for each of our tables, we're going tog get all 
-//     img-tagged elements and attach event listeners to them
-for(let i = 0; i < table.length; ++i) {
-    const imageElements = table[i].getElementsByTagName('img');
-    console.log(imageElements);
-
-    for(let j = 0; j < imageElements.length; ++j) { 
-        // event listeners allow you to assign multiple actions to the same type of event
-        //     (unlike attaching event callbacks via the DOM)
-        imageElements[j].addEventListener('click', function(){changePhoto(this.src);});
-        imageElements[j].addEventListener('click', function(){showCaption(this.alt);});
-    }
 }
 
 function navigation() {
@@ -125,7 +109,6 @@ function newCanvas() {
 
     // now create a new canvas element
     let newCanvas = document.createElement('canvas');
-    newCanvas.style.border = "thin solid black";
 
     // and create a new Drawing object using the new canvas element
     let randIndex = Math.floor(Math.random() * colors.length); // randomly select color from list
@@ -248,16 +231,14 @@ Drawing.prototype.start = function() {
     this.canvas.addEventListener("mousedown", this.canvas_mousedown);
     this.canvas.addEventListener("mouseup", this.canvas_mouseup);
 };
-
-// Let's pick a color, set our sliders to it, and create our Drawing object
-let randIndex = Math.floor(Math.random() * colors.length);
-document.getElementById('red').value = colors[randIndex][0];
-document.getElementById('green').value = colors[randIndex][1];
-document.getElementById('blue').value = colors[randIndex][2];
-let drawing = new Drawing(document.getElementsByTagName('canvas')[0], 600, 450, colors[randIndex]);
   
 window.onload = function() {
-    document.getElementsByTagName('canvas')[0].style.border = "thin solid black";
+    // Let's pick a color, set our sliders to it, and create our Drawing object
+    let randIndex = Math.floor(Math.random() * colors.length);
+    document.getElementById('red').value = colors[randIndex][0];
+    document.getElementById('green').value = colors[randIndex][1];
+    document.getElementById('blue').value = colors[randIndex][2];
+    let drawing = new Drawing(document.getElementsByTagName('canvas')[0], 600, 450, colors[randIndex]);
     drawing.start();
 
     // on window load, let's check to see if cookies for the image color have been set
@@ -283,21 +264,75 @@ window.onload = function() {
         document.getElementById('green').value = Number(g);
     }
 
-    const request = new XMLHttpRequest();
-
-    request.onreadystatechange = function() {
+    // Request to load all submitted drawings
+    const submissions_request = new XMLHttpRequest();
+    submissions_request.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             let documents = this.responseText.trim();
             documents = documents.split(',');
+
+            let numRows = Math.ceil(documents.length / 3.0);
+            for(let i = 0; i < numRows; ++i) {
+                let newRow = document.createElement('div');
+                newRow.className = "image_row";
+                document.getElementById('past_drawings').append(newRow);
+            }
+
+            let index = 0, row = 0;
             documents.forEach(name => {
                 let newImage = new Image();
                 newImage.src = "saved/" + name;
-                newImage.style.border = "thin solid black";
-                document.getElementById('past_drawings').append(newImage);
+                newImage.className = "gallery_image";
+                newImage.addEventListener('click', function(){changePhoto(this.src);});
+
+                if (index % 3 === 0 && index > 0) {
+                    ++row;
+                }
+                document.getElementById('past_drawings').getElementsByClassName('image_row')[row].append(newImage);
+                ++index;
             });
         }
     };
 
-    request.open('GET', 'get_images.php');
-    request.send();
+    submissions_request.open('GET', 'get_images.php?submissions=1');
+    submissions_request.send();
+
+    // Request to load all my drawings
+    const drawings_request = new XMLHttpRequest();
+    drawings_request.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            let lines = this.responseText.trim();
+            lines = lines.split('\n');
+            let element = 0; // element tracks which image_container we're adding to
+            lines.forEach(line => {
+                let files = line.split(',');
+                let numRows = Math.ceil(files.length / 3.0);
+                for(let i = 0; i < numRows; ++i) {
+                    let newRow = document.createElement('div');
+                    newRow.className = "image_row";
+                    document.getElementsByClassName('image_container')[element].append(newRow);
+                }
+                let index = 0, row = 0; // row tracks which row within an image_container, index which image
+                files.forEach(name => {
+                    let newImage = new Image();
+                    newImage.className = "gallery_image";
+                    newImage.src = folderNames[element] + name;
+                    newImage.addEventListener('click', function(){changePhoto(this.src);});
+                    //newImage.addEventListener('click', function(){showCaption(this.alt);});
+                    
+                    fileNames.push(newImage.src);
+                    
+                    if (index % 3 === 0 && index > 0) {
+                        ++row;
+                    }
+                    document.getElementsByClassName('image_container')[element].getElementsByClassName('image_row')[row].append(newImage);
+                    ++index;
+                })
+                ++element;
+            });
+        }
+    };
+
+    drawings_request.open('GET', 'get_images.php?drawings=1');
+    drawings_request.send();
 };

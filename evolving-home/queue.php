@@ -10,6 +10,7 @@
         <head>
             <meta charset="UTF-8">
             <title>Submission Queue</title>
+            <link rel="stylesheet" href="gallery.css">
 
             <script>
                 setTimeout(function() {
@@ -33,6 +34,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Submission Queue</title>
+        <link rel="stylesheet" href="gallery.css">
         <script>
             let new_canvas;
 
@@ -68,7 +70,7 @@
                 <input type="submit" name="submit" id="submit">
                 <input type="submit" name="clear" value="Clear">
             </form>
-            <input type="button" value="Go to Gallery" onclick="document.location.href='gallery.php';">
+            <input type="button" value="Go to Gallery" onclick="document.location.href='gallery.html';">
             <?php
                 $is_admin = $_SESSION['username'] === 'admin';
                 if(isset($_POST['filearr'])){
