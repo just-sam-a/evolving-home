@@ -194,8 +194,8 @@ Drawing.prototype.canvas_mousemove = function(e) {
         this.x = e.offsetX;
         this.y = e.offsetY;
     } else {
-        let x = e.touches[0].pageX - this.canvas.offsetLeft;
-        let y = e.touches[0].pageY - this.canvas.offsetTop;
+        let x = (e.touches[0].pageX - this.canvas.offsetLeft) * (this.canvas.width / this.canvas.clientWidth);
+        let y = (e.touches[0].pageY - this.canvas.offsetTop) * (this.canvas.height / this.canvas.clientHeight);
         this.draw(x, y);
 
         this.x = x;
@@ -210,8 +210,8 @@ Drawing.prototype.canvas_mousedown = function(e) {
         this.x = e.offsetX;
         this.y = e.offsetY;
     } else {
-        this.x = e.touches[0].pageX - this.canvas.offsetLeft;
-        this.y = e.touches[0].pageY - this.canvas.offsetTop;
+        this.x = (e.touches[0].pageX - this.canvas.offsetLeft) * (this.canvas.width / this.canvas.clientWidth);
+        this.y = (e.touches[0].pageY - this.canvas.offsetTop) * (this.canvas.height / this.canvas.clientHeight);
     }
 
     // when we mousedown, we want to add an event listener for mousemove
@@ -232,8 +232,8 @@ Drawing.prototype.canvas_mouseup = function(e) {
         this.x = 0;
         this.y = 0;
     } else if (e.targetTouches.length !== 0) {
-        let x = e.touches[0].pageX - this.canvas.offsetLeft;
-        let y = e.touches[0].pageY - this.canvas.offsetTop;
+        let x = (e.touches[0].pageX - this.canvas.offsetLeft) * (this.canvas.width / this.canvas.clientWidth);
+        let y = (e.touches[0].pageY - this.canvas.offsetTop) * (this.canvas.height / this.canvas.clientHeight);
         this.draw(x, y);
 
         this.x = 0;
