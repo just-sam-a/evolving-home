@@ -28,7 +28,7 @@ function navigation() {
     if(shown === false) {
         shown = true;
         document.getElementsByTagName('nav')[0].style.display = "block";
-        document.getElementById('nav_button').style.left = "238px";
+        document.getElementById('nav_button').style.left = String(document.getElementsByTagName('nav')[0].offsetWidth + 15) + 'px';
         document.getElementById('nav_button').value = "<";
     } else {
         shown = false;
@@ -98,6 +98,10 @@ function newCanvas() {
     drawing.canvas.removeEventListener("mousedown", drawing.canvas_mousedown);
     drawing.canvas.removeEventListener("mouseup", drawing.canvas_mouseup);
     drawing.canvas.removeEventListener("mousemove", drawing.canvas_mousemove);
+
+    drawing.canvas.removeEventListener("touchstart", drawing.canvas_mousedown);
+    drawing.canvas.removeEventListener("touchend", drawing.canvas_mouseup);
+    drawing.canvas.removeEventListener("touchmove", drawing.canvas_mousemove);
 
     saveCanvas();
     alert("Canvas successfully submitted to queue.");
@@ -183,19 +187,38 @@ Drawing.prototype.draw = function(newX, newY) {
 }
   
 Drawing.prototype.canvas_mousemove = function(e) {
-    this.draw(e.offsetX, e.offsetY);
-    this.x = e.offsetX;
-    this.y = e.offsetY;
+    e.preventDefault();
+
+    if (e.touches.length === 0) {
+        this.draw(e.offsetX, e.offsetY);
+        this.x = e.offsetX;
+        this.y = e.offsetY;
+    } else {
+        let x = e.touches[0].pageX - this.canvas.offsetLeft;
+        let y = e.touches[0].pageY - this.canvas.offsetTop;
+        this.draw(x, y);
+
+        this.x = x;
+        this.y = y;
+    }
 }
 
 Drawing.prototype.canvas_mousedown = function(e) {
-    this.x = e.offsetX;
-    this.y = e.offsetY;
+    e.preventDefault();
+
+    if (e.touches.length === 0) {
+        this.x = e.offsetX;
+        this.y = e.offsetY;
+    } else {
+        this.x = e.touches[0].pageX - this.canvas.offsetLeft;
+        this.y = e.touches[0].pageY - this.canvas.offsetTop;
+    }
 
     // when we mousedown, we want to add an event listener for mousemove
     //     in case this is the beginning of a new line in our drawing
     this.canvas_mousemove = this.canvas_mousemove.bind(this);
     this.canvas.addEventListener("mousemove", this.canvas_mousemove);
+    this.canvas.addEventListener("touchmove", this.canvas_mousemove, false);
 }
 
 Drawing.prototype.canvas_mouseup = function(e) {
@@ -203,9 +226,19 @@ Drawing.prototype.canvas_mouseup = function(e) {
     //     in any case, we remove the event listener we previously attached to mousedown
     //     so that moving the mouse won't draw
     this.canvas.removeEventListener("mousemove", this.canvas_mousemove);
-    this.draw(e.offsetX, e.offsetY);
-    this.x = 0;
-    this.y = 0;
+    this.canvas.removeEventListener("touchmove", this.canvas_mousemove);
+    if (e !== false && e.touches.length === 0) {
+        this.draw(e.offsetX, e.offsetY);
+        this.x = 0;
+        this.y = 0;
+    } else if (e.targetTouches.length !== 0) {
+        let x = e.touches[0].pageX - this.canvas.offsetLeft;
+        let y = e.touches[0].pageY - this.canvas.offsetTop;
+        this.draw(x, y);
+
+        this.x = 0;
+        this.y = 0;
+    }
 }
 
 Drawing.prototype.set_color = function(r, g, b) { 
@@ -231,6 +264,9 @@ Drawing.prototype.start = function() {
     //     this will be used
     this.canvas.addEventListener("mousedown", this.canvas_mousedown);
     this.canvas.addEventListener("mouseup", this.canvas_mouseup);
+
+    this.canvas.addEventListener("touchstart", this.canvas_mousedown, false);
+    this.canvas.addEventListener("touchend", this.canvas_mouseup, false);
 };
   
 window.onload = function() {
@@ -241,6 +277,14 @@ window.onload = function() {
     document.getElementById('blue').value = colors[randIndex][2];
     drawing = new Drawing(document.getElementsByTagName('canvas')[0], 600, 450, colors[randIndex]);
     drawing.start();
+
+    window.addEventListener('mouseup', function(e){
+        drawing.canvas_mouseup(false);
+    });
+
+    window.addEventListener('touchend', function(e) {
+        drawing.canvas_mouseup(false);
+    });
 
     // on window load, let's check to see if cookies for the image color have been set
     let cookieValues = document.cookie.split('; ');

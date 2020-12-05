@@ -28,6 +28,9 @@ input[type=button]:focus, input[type=submit]:focus {
     background-color: var(--main-bg-color);
     border: thin solid var(--main-text-color);
     outline: none;
+
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
 }
 
 nav {
@@ -100,7 +103,7 @@ nav {
     transition: transform .2s;
 }
 
-.gallery_image:hover {
+.gallery_image:hover, .gallery_image:focus {
     transform: scale(1.05);
 }
 
@@ -111,4 +114,26 @@ nav {
 .queue_item {
     display: inline-block;
     vertical-align: middle;
+}
+
+@media only screen and (max-device-width: 1150px) {
+    canvas, img, .gallery_image {
+      width: 85%;
+    }
+
+    body {
+        font-size: 1.5em;
+    }
+
+    input[type=button], input[type=submit], 
+    input[type=button]:focus, input[type=submit]:focus {
+        font-size: 1.2em;
+    }
+
+    #nav_button {
+        height: 2em;
+        width: 2em;
+        padding: 0 0 0 0;
+        vertical-align: middle;
+    }
 }
