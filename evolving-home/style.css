@@ -4,6 +4,7 @@
 }
 
 body {
+    font-family: system-ui;
     color: var(--main-text-color);
     background-color: var(--main-bg-color);
     text-align: center;
@@ -19,18 +20,27 @@ hr {
 canvas, img {
     background-color: white;
     border: thin solid var(--main-text-color);
-    margin: 3px;
 }
 
 input[type=button], input[type=submit], 
 input[type=button]:focus, input[type=submit]:focus {
     color: var(--main-text-color);
+    margin: 2.5px;
     background-color: var(--main-bg-color);
     border: thin solid var(--main-text-color);
     outline: none;
 
-    -webkit-appearance: none;
-    -webkit-border-radius: 0;
+    font-size: 1em;
+}
+
+input[type=text], input[type=password] {
+    color: var(--main-text-color);
+    margin: 2.5px;
+    background-color: white;
+    border: thin solid var(--main-text-color);
+    outline: none;
+
+    font-size: 1em;
 }
 
 nav {
@@ -77,8 +87,7 @@ nav {
 }
 
 #photo_caption {
-    border: thin solid var(--main-text-color);   
-    color: var(--main-text-color); 
+    border: thin solid var(--main-text-color); 
     background-color: var(--main-bg-color);
     padding: 3px;
 }
@@ -107,18 +116,65 @@ nav {
     transform: scale(1.05);
 }
 
-.image_row, .image_container, .queue_element {
+.image_row, .image_container {
     display: block; 
 }
 
-.queue_item {
+.queue_element {
+    padding: 3px;
+    display: block; 
+    border: thin solid var(--main-text-color); 
+    width: 620px;
+    margin: auto;
+    margin-bottom: 5px;
+}
+
+.queue_item, label, input[type=range], #swatch {
     display: inline-block;
     vertical-align: middle;
 }
 
+.canvas_controls {
+    border: thin solid var(--main-text-color);
+    padding: 10px;
+    margin-bottom: 10px;
+    max-width: 85%;
+    display: inline-block;
+    vertical-align: middle; 
+}
+
+.color_slider {
+    border: thin solid var(--main-text-color); 
+    padding: 5px;
+    margin: 2.5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+a:link {
+    color: var(--main-text-color);
+}
+  
+a:visited, a:active {
+    color: rgb(139, 108, 167);
+}
+
 @media only screen and (max-device-width: 1150px) {
-    canvas, img, .gallery_image {
-      width: 85%;
+    .image_container {
+      width: 100%;
+      margin: auto;
+    }
+
+    #photo_frame, canvas {
+        width: 85%;
+    }
+
+    #photo_img {
+        width: 95%;
+    }
+
+    .gallery_image {
+        width: 28%;
     }
 
     body {
@@ -126,14 +182,17 @@ nav {
     }
 
     input[type=button], input[type=submit], 
-    input[type=button]:focus, input[type=submit]:focus {
+    input[type=button]:focus, input[type=submit]:focus,
+    label, input[type=text], input[type=password] {
         font-size: 1.2em;
+        -webkit-appearance: none;
+        -webkit-border-radius: 0;
     }
 
     #nav_button {
         height: 2em;
         width: 2em;
-        padding: 0 0 0 0;
-        vertical-align: middle;
+        padding-left: .7em;
+        padding-bottom: .25em;
     }
 }

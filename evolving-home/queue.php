@@ -10,7 +10,7 @@
         <head>
             <meta charset="UTF-8">
             <title>Submission Queue</title>
-            <link rel="stylesheet" href="gallery.css">
+            <link rel="stylesheet" href="style.css">
 
             <script>
                 setTimeout(function() {
@@ -35,7 +35,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Submission Queue</title>
-        <link rel="stylesheet" href="gallery.css">
+        <link rel="stylesheet" href="style.css">
         <script>
             let new_canvas;
 

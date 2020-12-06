@@ -35,7 +35,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Submission Queue Login</title>
-        <link rel="stylesheet" href="gallery.css">
+        <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
@@ -48,8 +48,8 @@
             <p>Welcome. Please enter a username and password to view the queue.</p>
             <p>To view submissions as a guest, please use username 'guest' and password 'guest_login'.</p>
             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                <input type="text" name="username">
-                <input type="password" name="password">
+                <input type="text" name="username"><br>
+                <input type="password" name="password"><br>
                 <input type="submit" value="Log In">
             </form>
             <?php if($error) { ?>

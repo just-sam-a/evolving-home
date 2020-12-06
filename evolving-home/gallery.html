@@ -2,10 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-
-
-        <link rel="stylesheet" href="gallery.css?v=85">
-        <script src="gallery.js?v=150" defer></script>
+        <title>Sam's Drawing Page</title>
+        <link rel="stylesheet" href="style.css?v=330">
+        <script src="gallery.js?v=200" defer></script>
     </head>
 
     <body>
@@ -22,16 +21,16 @@
         </nav>
         <input type="button" id="nav_button" onclick="navigation()" value=">">
 
-        <div id="image_overlay">
-            <img id="photo_img" src="images/0_drawings/drawing2.jpeg" onclick="hide()" width="600">
+        <div id="image_overlay" onclick="hide()">
+            <img id="photo_img" src="images/1_bluecoats/bluecoats1.PNG" width="700">
             <!-- <br><span id="photo_caption"></span><br> -->
         </div>
         <main>
             <hr>
             <h2>Featured Image</h2>
-            <span>Click for a random image, or select one from below.</span><br>
-            <img src="images/0_drawings/drawing2.jpeg" id="photo_frame" onclick="changePhoto()" width="600">
-            
+            <span>Click for a random image, or select one from below to enlarge it.</span><br><br>
+            <img src="images/1_bluecoats/bluecoats1.PNG" id="photo_frame" onclick="changePhoto()" width="600">
+            <br><br>
             <h2 id="some_drawings">Recent Drawings</h2>
             <div class="image_container"></div>
 
@@ -40,20 +39,30 @@
 
             <hr>
             <h2 id="your_turn">Your Turn!</h2>
-            <input type="button" onclick="clearCanvas()" value="Clear Canvas">
-            <input type="button" onclick="newCanvas()" value="Submit Canvas">
-            <input type="button" onclick="downloadCanvas()" value="Download Canvas">
-            <input type="button" onclick="loadRecentImage()" value="Restore Last Canvas">
-            <input type="button" value="Go to Queue" onclick="document.location.href='queue.php';">
+            <div class="canvas_controls">
+                <input type="button" onclick="clearCanvas()" value="Clear Canvas">
+                <input type="button" onclick="newCanvas()" value="Submit Canvas">
+                <input type="button" onclick="downloadCanvas()" value="Download Canvas">
+                <input type="button" onclick="loadRecentImage()" value="Restore Last Canvas">
+                <input type="button" value="Go to Queue" onclick="document.location.href='queue.php';">
+            </div>
             <br>
-            <label for="red">Red</label>
-            <input type="range" id="red" min="0" max="255" value="0" step="1" oninput="updateColors()">
-            <label for="green">Green</label>
-            <input type="range" id="green" min="0" max="255" value="0" step="1" oninput="updateColors()">
-            <label for="blue">Blue</label>
-            <input type="range" id="blue" min="0" max="255" value="0" step="1" oninput="updateColors()">
+            <div class="canvas_controls">
+                <div class="color_slider">
+                    <label for="red">R</label>
+                    <input type="range" id="red" min="0" max="255" value="0" step="1" oninput="updateColors()">
+                </div>
+                <div class="color_slider">
+                    <label for="green">G</label>
+                    <input type="range" id="green" min="0" max="255" value="0" step="1" oninput="updateColors()">
+                </div>
+                <div class="color_slider">
+                    <label for="blue">B</label>
+                    <input type="range" id="blue" min="0" max="255" value="0" step="1" oninput="updateColors()">
+                </div>
+                <input type="button" id="swatch" value=" ">
+            </div>
             
-            <br>
             <div id="drawing_area"><canvas></canvas></div>
             <br>
             <div id="submitted_drawings" style="display: none;">

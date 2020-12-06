@@ -156,6 +156,7 @@ function updateColors() {
     let b = document.getElementById('blue').value;
 
     drawing.set_color(r, g, b);
+    document.getElementById('swatch').style.backgroundColor = "rgb(" + r + ',' + g + ',' + b + ")";
 
     // every time our colors are updated, let's update (or create) cookies to store the colors
     document.cookie = "red=" + r;
@@ -189,7 +190,7 @@ Drawing.prototype.draw = function(newX, newY) {
 Drawing.prototype.canvas_mousemove = function(e) {
     e.preventDefault();
 
-    if (e.touches.length === 0) {
+    if (!e.targetTouches) {
         this.draw(e.offsetX, e.offsetY);
         this.x = e.offsetX;
         this.y = e.offsetY;
@@ -206,7 +207,7 @@ Drawing.prototype.canvas_mousemove = function(e) {
 Drawing.prototype.canvas_mousedown = function(e) {
     e.preventDefault();
 
-    if (e.touches.length === 0) {
+    if (!e.targetTouches) {
         this.x = e.offsetX;
         this.y = e.offsetY;
     } else {
@@ -227,11 +228,11 @@ Drawing.prototype.canvas_mouseup = function(e) {
     //     so that moving the mouse won't draw
     this.canvas.removeEventListener("mousemove", this.canvas_mousemove);
     this.canvas.removeEventListener("touchmove", this.canvas_mousemove);
-    if (e !== false && e.touches.length === 0) {
+    if (e !== false && !e.targetTouches) {
         this.draw(e.offsetX, e.offsetY);
         this.x = 0;
         this.y = 0;
-    } else if (e.targetTouches.length !== 0) {
+    } else if (e.targetTouches) {
         let x = (e.touches[0].pageX - this.canvas.offsetLeft) * (this.canvas.width / this.canvas.clientWidth);
         let y = (e.touches[0].pageY - this.canvas.offsetTop) * (this.canvas.height / this.canvas.clientHeight);
         this.draw(x, y);
@@ -275,6 +276,8 @@ window.onload = function() {
     document.getElementById('red').value = colors[randIndex][0];
     document.getElementById('green').value = colors[randIndex][1];
     document.getElementById('blue').value = colors[randIndex][2];
+
+    document.getElementById('swatch').style.backgroundColor = "rgb(" + colors[randIndex][0] + ',' + colors[randIndex][1] + ',' + colors[randIndex][2] + ")";
     drawing = new Drawing(document.getElementsByTagName('canvas')[0], 600, 450, colors[randIndex]);
     drawing.start();
 
@@ -380,4 +383,7 @@ window.onload = function() {
 
     drawings_request.open('GET', 'get_images.php?drawings=1');
     drawings_request.send();
+
+    document.getElementById('swatch').style.height = String(document.getElementsByClassName('color_slider')[0].offsetHeight) + 'px';
+    document.getElementById('swatch').style.width = String(document.getElementsByClassName('color_slider')[0].offsetHeight) + 'px';
 };
