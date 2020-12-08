@@ -299,17 +299,17 @@ window.onload = function() {
         } else if(localCookie[0] === "blue") {
             b = localCookie[1];
         } else if(localCookie[0] === "green") {
-            g = localCookie[1];
+            g = localCookie[1]; 
         }
     }
 
     // if so, let's use the value of those cookies to set our Drawing color
     //     and color sliders; otherwise, we'll keep the random color from earlier
     if(r !== undefined && g !== undefined && b !== undefined) {
-        drawing.set_color(r, g, b);
         document.getElementById('red').value = Number(r);
         document.getElementById('blue').value = Number(b);
         document.getElementById('green').value = Number(g);
+        updateColors();
     }
 
     // Request to load all submitted drawings
@@ -383,6 +383,16 @@ window.onload = function() {
 
     drawings_request.open('GET', 'get_images.php?drawings=1');
     drawings_request.send();
+
+    const load_into_db = new XMLHttpRequest();
+    load_into_db.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+        }
+    }
+
+    load_into_db.open('GET', 'get_images.php?captions=1');
+    load_into_db.send();
 
     document.getElementById('swatch').style.height = String(document.getElementsByClassName('color_slider')[0].offsetHeight) + 'px';
     document.getElementById('swatch').style.width = String(document.getElementsByClassName('color_slider')[0].offsetHeight) + 'px';

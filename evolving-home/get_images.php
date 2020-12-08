@@ -16,6 +16,32 @@
                 $folder_string = implode(',', $folder_files);
                 echo "$folder_string" . "\n";
             }
+        } else if (isset($_GET['captions'])) {
+            try {
+                $drawingsdb = new SQLite3('drawings.db');
+
+                $statement = "CREATE TABLE IF NOT EXISTS drawings (filename TEXT, caption TEXT, artist TEXT);";
+                $run = $drawingsdb->query($statement);
+
+                $captions_path = __DIR__ . "/captions.txt";
+                $captions_content = file_get_contents($captions_path);
+                $captions_arr = explode('-', $captions_content);
+
+                foreach($captions_arr as $caption) {
+                    $current_line = explode(',', $caption);
+
+                    $filename = $current_line[0];
+                    $caption_text = $current_line[1];
+                    $artist = $current_line[2];
+
+                    $statement = "INSERT INTO drawings (filename, caption, artist) VALUES ('$filename', '$caption_text', '$artist');";
+                    $run = $drawingsdb->query($statement);
+                }
+
+                echo "Success!";
+            } catch (Exception $ex) {
+                echo $ex->getMessage();
+            }
         }
     }
 ?>

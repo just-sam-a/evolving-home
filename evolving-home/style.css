@@ -73,7 +73,7 @@ nav {
 #image_overlay {
     position: fixed;
 
-    top:0px;
+    top: 0px;
     left: 0px;
 
     width: 100%;
@@ -97,19 +97,23 @@ nav {
     top: 50%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
+
+    max-width: 95%;
 }
 
 .gallery_image { 
     width: 300px;
+    max-width: 28%;
 
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 40px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 4%;
     vertical-align: middle;
 
     z-index: 0;
 
     transition: transform .2s;
+    -webkit-transform: translate3d(0,0,0);
 }
 
 .gallery_image:hover, .gallery_image:focus {
@@ -117,6 +121,7 @@ nav {
 }
 
 .image_row, .image_container {
+    max-width: 100%;
     display: block; 
 }
 
@@ -138,9 +143,12 @@ nav {
     border: thin solid var(--main-text-color);
     padding: 10px;
     margin-bottom: 10px;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
     max-width: 85%;
-    display: inline-block;
-    vertical-align: middle; 
 }
 
 .color_slider {
@@ -151,6 +159,10 @@ nav {
     vertical-align: middle;
 }
 
+#photo_frame, canvas {
+    max-width: 85%;
+}
+
 a:link {
     color: var(--main-text-color);
 }
@@ -159,10 +171,9 @@ a:visited, a:active {
     color: rgb(139, 108, 167);
 }
 
-@media only screen and (max-device-width: 1150px) {
-    .image_container {
-      width: 100%;
-      margin: auto;
+@media (max-device-width: 1150px) {
+    body {
+        font-size: 1.5em;
     }
 
     #photo_frame, canvas {
@@ -171,14 +182,6 @@ a:visited, a:active {
 
     #photo_img {
         width: 95%;
-    }
-
-    .gallery_image {
-        width: 28%;
-    }
-
-    body {
-        font-size: 1.5em;
     }
 
     input[type=button], input[type=submit], 
