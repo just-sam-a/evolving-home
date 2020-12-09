@@ -21,6 +21,7 @@ function changePhoto(path) {
 }
 
 function showCaption(caption) {
+    document.getElementById('photo_caption').style.display = "block";
     document.getElementById('photo_caption').innerHTML = "Image Caption: " + caption;
 }
 
@@ -39,6 +40,7 @@ function navigation() {
 }
 
 function hide() {
+    document.getElementById('photo_caption').style.display = "none";
     document.getElementById('image_overlay').style.display = "none";
 }
 
@@ -61,7 +63,7 @@ function saveCanvas() {
         let formdata = new FormData();
         formdata.append('image', image);
 
-        request.open('POST', 'process_images.php');
+        request.open('POST', 'php_helper.php');
         request.onload = function() {
             if (this.status === 200) {
                 console.log(this.responseText.trim());
@@ -314,84 +316,58 @@ window.onload = function() {
 
     // Request to load all submitted drawings
     const submissions_request = new XMLHttpRequest();
-    submissions_request.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            let documents = this.responseText.trim();
-            documents = documents.split(',');
+    submissions_request.onload = function() {
+        let documents = this.responseText.trim();
+        documents = documents.split(',');
 
-            let numRows = Math.ceil(documents.length / 3.0);
-            for(let i = 0; i < numRows; ++i) {
-                let newRow = document.createElement('div');
-                newRow.className = "image_row";
-                document.getElementById('past_drawings').append(newRow);
-            }
-
-            let index = 0, row = 0;
-            documents.forEach(name => {
-                let newImage = new Image();
-                newImage.src = "saved/" + name;
-                newImage.className = "gallery_image";
-                newImage.addEventListener('click', function(){changePhoto(this.src);});
-
-                if (index % 3 === 0 && index > 0) {
-                    ++row;
-                }
-                document.getElementById('past_drawings').getElementsByClassName('image_row')[row].append(newImage);
-                ++index;
-            });
-        }
+        documents.forEach(name => {
+            let newImage = new Image();
+            newImage.src = "saved/" + name;
+            newImage.className = "gallery_image";
+            newImage.addEventListener('click', function(){changePhoto(this.src);});
+            document.getElementById('past_drawings').append(newImage);
+        });
     };
 
-    submissions_request.open('GET', 'get_images.php?submissions=1');
+    submissions_request.open('GET', 'php_helper.php?submissions=1');
     submissions_request.send();
 
     // Request to load all my drawings
     const drawings_request = new XMLHttpRequest();
-    drawings_request.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            let lines = this.responseText.trim();
-            lines = lines.split('\n');
-            let element = 0; // element tracks which image_container we're adding to
-            lines.forEach(line => {
-                let files = line.split(',');
-                let numRows = Math.ceil(files.length / 3.0);
-                for(let i = 0; i < numRows; ++i) {
-                    let newRow = document.createElement('div');
-                    newRow.className = "image_row";
-                    document.getElementsByClassName('image_container')[element].append(newRow);
+    drawings_request.onload = function() {
+        let lines = this.responseText.trim();
+        lines = lines.split('\n');
+        let element = 0; // element tracks which image_container we're adding to
+        lines.forEach(line => {
+            let files = line.split(',');
+            files.forEach(name => {
+                let newImage = new Image();
+                newImage.className = "gallery_image";
+                newImage.src = folderNames[element] + name;
+                newImage.addEventListener('click', function(){changePhoto(this.src);});
+                
+                const caption_request = new XMLHttpRequest();
+                caption_request.onload = function() { 
+                    let caption = this.responseText; 
+                    newImage.addEventListener('click', function(){showCaption(caption);});
                 }
-                let index = 0, row = 0; // row tracks which row within an image_container, index which image
-                files.forEach(name => {
-                    let newImage = new Image();
-                    newImage.className = "gallery_image";
-                    newImage.src = folderNames[element] + name;
-                    newImage.addEventListener('click', function(){changePhoto(this.src);});
-                    //newImage.addEventListener('click', function(){showCaption(this.alt);});
-                    
-                    fileNames.push(newImage.src);
-                    
-                    if (index % 3 === 0 && index > 0) {
-                        ++row;
-                    }
-                    document.getElementsByClassName('image_container')[element].getElementsByClassName('image_row')[row].append(newImage);
-                    ++index;
-                })
-                ++element;
-            });
-        }
+                caption_request.open('GET', 'php_helper.php?caption=' + name);
+                caption_request.send();
+                
+                fileNames.push(newImage.src);
+
+                document.getElementsByClassName('image_container')[element].append(newImage);
+            })
+            ++element;
+        }); 
     };
 
-    drawings_request.open('GET', 'get_images.php?drawings=1');
+    drawings_request.open('GET', 'php_helper.php?drawings=1');
     drawings_request.send();
 
     const load_into_db = new XMLHttpRequest();
-    load_into_db.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
-        }
-    }
-
-    load_into_db.open('GET', 'get_images.php?captions=1');
+    load_into_db.onload = function() { console.log(this.responseText); }
+    load_into_db.open('GET', 'php_helper.php?captions=1');
     load_into_db.send();
 
     document.getElementById('swatch').style.height = String(document.getElementsByClassName('color_slider')[0].offsetHeight) + 'px';

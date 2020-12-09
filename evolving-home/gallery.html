@@ -3,8 +3,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Sam's Drawing Page</title>
-        <link rel="stylesheet" href="style.css?v=380">
-        <script src="gallery.js?v=220" defer></script>
+        <link rel="stylesheet" href="style.css?v=460">
+        <script src="gallery.js?v=330" defer></script>
     </head>
 
     <body>
@@ -22,8 +22,10 @@
         <input type="button" id="nav_button" onclick="navigation()" value=">">
 
         <div id="image_overlay" onclick="hide()">
-            <img id="photo_img" src="images/1_bluecoats/bluecoats1.PNG" width="700">
-            <!-- <br><span id="photo_caption"></span><br> -->
+            <div id="overlay_contents">
+                <span id="photo_caption"></span>
+                <img id="photo_img" src="images/1_bluecoats/bluecoats1.PNG">
+            </div>
         </div>
         <main>
             <hr>
