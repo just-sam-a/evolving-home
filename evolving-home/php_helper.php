@@ -3,9 +3,24 @@
     header('Content-Type: text/plain; charset=utf-8'); 
     if(isset($_FILES['image'])) {
         $queue_dir = __DIR__ . "/queue";
-        $new_filename = $queue_dir . "/" . strval(time()) . ".png";
+        $filename = strval(time()) . ".png";
+        $new_filename = $queue_dir . "/" . $filename;
     
         $success = move_uploaded_file($_FILES['image']['tmp_name'], $new_filename);
+
+        try {
+            $drawingsdb = new SQLite3('drawings.db');
+            $statement = "CREATE TABLE IF NOT EXISTS queue (filename TEXT UNIQUE, caption TEXT, artist TEXT);";
+            $run = $drawingsdb->exec($statement);
+
+            $artist = SQLite3::escapeString($_POST['name']);
+            $statement = "INSERT OR IGNORE INTO queue (filename, artist) VALUES ('$filename', '$artist');";
+
+            $run = $drawingsdb->exec($statement);
+
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+        }
 
         if ($success) { 
             echo "File was uploaded sucessfully.";
@@ -32,7 +47,7 @@
                 $drawingsdb = new SQLite3('drawings.db');
 
                 $statement = "CREATE TABLE IF NOT EXISTS drawings (filename TEXT UNIQUE, caption TEXT, artist TEXT);";
-                $run = $drawingsdb->query($statement);
+                $run = $drawingsdb->exec($statement);
 
                 $captions_path = __DIR__ . "/images/captions.txt";
                 $captions_content = file_get_contents($captions_path);
@@ -46,7 +61,7 @@
                     $artist = $current_line[2];
                     
                     $statement = "INSERT OR IGNORE INTO drawings (filename, caption, artist) VALUES ('$filename', '$caption_text', '$artist');";
-                    $run = $drawingsdb->query($statement);
+                    $run = $drawingsdb->exec($statement);
                 }
             } catch (Exception $ex) {
                 echo $ex->getMessage();
@@ -55,12 +70,26 @@
             $filename = $_GET['caption'];
             try {
                 $drawingsdb = new SQLite3('drawings.db');
-                $statement = "SELECT caption FROM drawings WHERE filename='$filename'";
+                $statement = "SELECT caption FROM drawings WHERE filename='$filename';";
                 $run = $drawingsdb->query($statement);
 
                 if($run) {
                     $row = $run->fetchArray();
                     echo $row['caption'];
+                }
+            } catch (Exception $ex) {
+                echo $ex->getMessage();
+            }
+        } else if (isset($_GET['artist'])) {
+            $filename = $_GET['artist'];
+            try {
+                $drawingsdb = new SQLite3('drawings.db');
+                $statement = "SELECT artist FROM drawings WHERE filename='$filename';";
+                $run = $drawingsdb->query($statement);
+
+                if($run) {
+                    $row = $run->fetchArray();
+                    echo $row['artist'];
                 }
             } catch (Exception $ex) {
                 echo $ex->getMessage();

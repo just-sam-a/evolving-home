@@ -22,7 +22,7 @@ function changePhoto(path) {
 
 function showCaption(caption) {
     document.getElementById('photo_caption').style.display = "block";
-    document.getElementById('photo_caption').innerHTML = "Image Caption: " + caption;
+    document.getElementById('photo_caption').innerHTML = caption;
 }
 
 function navigation() {
@@ -53,6 +53,8 @@ function saveCanvas() {
     let imgData=drawing.context.getImageData(0, 0, drawing.canvas.width, drawing.canvas.height);
     lastImage = imgData.data;
 
+    let name = prompt('Enter your name:');
+
     drawing.canvas.toBlob(function (blob) {
         let image = new File([blob], "tmp.png", {
             type: "image/png",
@@ -62,6 +64,7 @@ function saveCanvas() {
 
         let formdata = new FormData();
         formdata.append('image', image);
+        formdata.append('name', name);
 
         request.open('POST', 'php_helper.php');
         request.onload = function() {
@@ -325,6 +328,15 @@ window.onload = function() {
             newImage.src = "saved/" + name;
             newImage.className = "gallery_image";
             newImage.addEventListener('click', function(){changePhoto(this.src);});
+
+            const artist_request = new XMLHttpRequest();
+            artist_request.onload = function() { 
+                let artist = this.responseText;
+                newImage.addEventListener('click', function(){showCaption("Drawn by: " + artist);});
+            }
+            artist_request.open('GET', 'php_helper.php?artist=' + name);
+            artist_request.send();
+
             document.getElementById('past_drawings').append(newImage);
         });
     };
@@ -366,7 +378,7 @@ window.onload = function() {
     drawings_request.send();
 
     const load_into_db = new XMLHttpRequest();
-    load_into_db.onload = function() { console.log(this.responseText); }
+    load_into_db.onload = function() { if(this.responseText !== "") {console.log(this.responseText);} }
     load_into_db.open('GET', 'php_helper.php?captions=1');
     load_into_db.send();
 

@@ -71,8 +71,9 @@
     
         <main>
             <hr>
+            <br><br>
             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                <div id="queue"></div>
+                <div id="queue" class="image_container"></div>
                 <input type="submit" name="submit" id="submit" value="Add selected to gallery">
                 <input type="submit" name="clear" id="clear" value="Clear selected from queue">
             </form>
@@ -84,8 +85,27 @@
                     if(isset($_POST['submit'])) {
                         foreach($file_array as $filename) {
                             $file_directory = __DIR__ . "/queue/" . $filename;
-                            $new_file_directry = __DIR__ . "/saved/" . $filename;
-                            rename($file_directory, $new_file_directry);
+                            $new_file_directory = __DIR__ . "/saved/" . $filename;
+
+                            try {
+                                $drawingsdb = new SQLite3('drawings.db');
+                                $statement = "SELECT artist FROM queue WHERE filename='$filename'";
+                                $run = $drawingsdb->query($statement);
+                
+                                if($run) {
+                                    $row = $run->fetchArray();
+                                    $artist = $row['artist'];
+                                    $statement = "INSERT OR IGNORE INTO drawings (filename, artist) VALUES ('$filename', '$artist');";
+                                    $run = $drawingsdb->exec($statement);
+
+                                    $statement = "DELETE FROM queue WHERE filename='$filename';";
+                                    $run = $drawingsdb->exec($statement);
+                                }
+                            } catch (Exception $ex) {
+                                echo $ex->getMessage();
+                            }
+
+                            rename($file_directory, $new_file_directory);
                         }
                     } else if (isset($_POST['clear'])) {
                         foreach($file_array as $filename) {
