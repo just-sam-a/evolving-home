@@ -39,7 +39,7 @@
         <script>
             let new_canvas;
 
-            function loadFrom(filename, admin) {
+            function loadFrom(filename, artist, admin) {
                 let newDiv = document.createElement('div');
                 newDiv.className = "queue_element";
                 
@@ -48,12 +48,17 @@
                 newCheckbox.name = "filearr[]"
                 newCheckbox.value = filename;
 
+                let newSpan = document.createElement('span');
+                newSpan.style="display: block;margin-bottom: .5%;"
+                newSpan.innerHTML = artist;
+
                 let newImage = new Image();
                 newImage.src = "queue/" + filename;
 
                 newImage.className = "queue_item";
                 newCheckbox.className = "queue_item";
 
+                newDiv.append(newSpan);
                 newDiv.append(newImage);
                 if (admin) {
                     newDiv.append(newCheckbox);
@@ -80,6 +85,13 @@
             <input type="button" value="Go to Gallery" onclick="document.location.href='gallery.html';">
             <?php
                 $is_admin = $_SESSION['username'] === 'admin';
+                $drawingsdb;
+                try {
+                    $drawingsdb = new SQLite3('drawings.db');
+                } catch (Exception $ex) {
+                    echo $ex->getMessage();
+                }
+
                 if(isset($_POST['filearr'])){
                     $file_array = $_POST['filearr'];
                     if(isset($_POST['submit'])) {
@@ -88,7 +100,7 @@
                             $new_file_directory = __DIR__ . "/saved/" . $filename;
 
                             try {
-                                $drawingsdb = new SQLite3('drawings.db');
+                                //$drawingsdb = new SQLite3('drawings.db');
                                 $statement = "SELECT artist FROM queue WHERE filename='$filename'";
                                 $run = $drawingsdb->query($statement);
                 
@@ -111,6 +123,14 @@
                         foreach($file_array as $filename) {
                             $file_directory = __DIR__ . "/queue/" . $filename;
                             unlink($file_directory);
+
+                            try {
+                                //$drawingsdb = new SQLite3('drawings.db');
+                                $$statement = "DELETE FROM queue WHERE filename='$filename';";
+                                $run = $drawingsdb->query($statement);
+                            } catch (Exception $ex) {
+                                echo $ex->getMessage();
+                            }
                         }
                     }
                 }
@@ -120,10 +140,22 @@
 
                 foreach($files as $filename) {
                     $curr_file = $queue_dir . '/' . $filename;
+                    $artist = "";
+                    try {
+                        $statement = "SELECT artist FROM queue WHERE filename='$filename'";
+                        $run = $drawingsdb->query($statement);
+        
+                        if($run) {
+                            $row = $run->fetchArray();
+                            $artist = $row['artist'];
+                        }
+                    } catch (Exception $ex) {
+                        echo $ex->getMessage();
+                    }
                     ?> <script>
-                        loadFrom(<?php echo '"' . "$filename" . '"'; ?>, <?php echo "$is_admin" ?>);
+                        loadFrom(<?php echo '"' . "$filename" . '"'; ?>, <?php echo '"' . "$artist" . '"' ?>, <?php echo "$is_admin" ?>);
                     </script> <?php
-                }
+                } 
             ?>
         </main>
     </body>
