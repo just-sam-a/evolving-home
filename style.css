@@ -200,10 +200,6 @@ a:visited, a:active {
         width: 85%;
     }
 
-    #photo_img {
-        width: 95%;
-    }
-
     input[type=button], input[type=submit], 
     input[type=button]:focus, input[type=submit]:focus,
     label, input[type=text], input[type=password] {

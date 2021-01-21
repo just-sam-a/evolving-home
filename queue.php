@@ -15,7 +15,7 @@
             <script>
                 setTimeout(function() {
                     window.location.href = '/~samamin/queue_login.php';
-                }, 2000)
+                }, 1000)
             </script>
         </head>
         <body>
